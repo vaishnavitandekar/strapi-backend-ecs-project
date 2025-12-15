@@ -57,15 +57,17 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          IMAGE_TAG=${{ github.event.inputs.IMAGE_TAG || github.sha }}
-          terraform apply -auto-approve \
-          -var="image_tag=${{ github.event.inputs.IMAGE_TAG }}" \
-          -var="ecr_repo=${{ secrets.ECR_REPO }}" \
-          -var="existing_execution_role_arn=${{ secrets.ECS_EXECUTION_ROLE_ARN }}" \
-          -var="app_keys=${{ secrets.APP_KEYS }}" \
-          -var="admin_jwt_secret=${{ secrets.ADMIN_JWT_SECRET }}" \
-          -var="api_token_salt=${{ secrets.API_TOKEN_SALT }}" \
-          -var="transfer_token_salt=${{ secrets.TRANSFER_TOKEN_SALT }}" \
-          -var="encryption_key=${{ secrets.ENCRYPTION_KEY }}" \
-          -var="jwt_secret=${{ secrets.JWT_SECRET }}"
+         IMAGE_TAG=${{ github.event.inputs.IMAGE_TAG || github.sha }}
+         echo "Deploying with IMAGE_TAG=$IMAGE_TAG"
+         terraform apply -auto-approve \
+         -var="image_tag=$IMAGE_TAG" \
+         -var="ecr_repo=${{ secrets.ECR_REPO }}" \
+         -var="existing_execution_role_arn=${{ secrets.ECS_EXECUTION_ROLE_ARN }}" \
+         -var="app_keys=${{ secrets.APP_KEYS }}" \
+         -var="admin_jwt_secret=${{ secrets.ADMIN_JWT_SECRET }}" \
+         -var="api_token_salt=${{ secrets.API_TOKEN_SALT }}" \
+         -var="transfer_token_salt=${{ secrets.TRANSFER_TOKEN_SALT }}" \
+         -var="encryption_key=${{ secrets.ENCRYPTION_KEY }}" \
+         -var="jwt_secret=${{ secrets.JWT_SECRET }}"
         working-directory: terraform
+
