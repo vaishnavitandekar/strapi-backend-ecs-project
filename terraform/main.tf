@@ -3,12 +3,12 @@ provider "aws" {
 }
 
 resource "aws_cloudwatch_log_group" "strapi" {
-  name              = "/ecs/strapi-backend"
+  name              = "/ecs/strapi-backend-ecs"
   retention_in_days = 7
 }
 
 resource "aws_ecs_cluster" "this" {
-  name = "strapi-backend-cluster"
+  name = "strapi-backend-cluster-ecs"
 }
 
 resource "aws_ecs_task_definition" "strapi" {
@@ -21,7 +21,7 @@ resource "aws_ecs_task_definition" "strapi" {
 
   container_definitions = jsonencode([
     {
-      name         = "strapi-backend"
+      name         = "strapi-backend-ecs"
       image        = "${var.ecr_repo}:${var.image_tag}"
       essential    = true
       portMappings = [{ containerPort = 1337 }]
@@ -52,7 +52,7 @@ resource "aws_ecs_task_definition" "strapi" {
 }
 
 resource "aws_ecs_service" "strapi" {
-  name            = "strapi-backend-service"
+  name            = "strapi-backend-service-ecs"
   cluster         = aws_ecs_cluster.this.id
   task_definition = aws_ecs_task_definition.strapi.arn
   desired_count   = 1
