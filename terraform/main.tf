@@ -2,11 +2,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_cloudwatch_log_group" "strapi" {
-  name              = "/ecs/strapi-backend-ecs"
-  retention_in_days = 7
-}
-
 resource "aws_ecs_cluster" "this" {
   name = "strapi-backend-cluster-ecs"
 }
@@ -42,11 +37,11 @@ resource "aws_ecs_task_definition" "strapi" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          awslogs-group         = aws_cloudwatch_log_group.strapi.name
+          awslogs-group         = "/ecs/strapi-backend-ecs"
           awslogs-region        = "us-east-1"
           awslogs-stream-prefix = "ecs"
-        }
-      }
+         }
+       }
     }
   ])
 }
