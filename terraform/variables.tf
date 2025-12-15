@@ -11,18 +11,6 @@ variable "existing_execution_role_arn" {
   type        = string
 }
 
-variable "db_username" {
-  description = "PostgreSQL username"
-  type        = string
-  sensitive   = true
-}
-
-variable "db_password" {
-  description = "PostgreSQL password"
-  type        = string
-  sensitive   = true
-}
-
 variable "app_keys" {
   description = "Strapi APP_KEYS"
   type        = string
