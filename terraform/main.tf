@@ -1,22 +1,6 @@
 provider "aws" {
   region = "us-east-1"
 }
-resource "aws_db_subnet_group" "strapi" {
-  name       = "strapi-db-subnet"
-  subnet_ids = ["subnet-019f80fcdf181c8d7", "subnet-0fa63b900995738f6"]
-}
-resource "aws_db_instance" "strapi" {
-  identifier           = "strapi-db"
-  engine               = "postgres"
-  engine_version       = "11.22"
-  instance_class       = "db.t3.micro"
-  allocated_storage    = 20
-  username             = var.db_username
-  password             = var.db_password
-  db_subnet_group_name = aws_db_subnet_group.strapi.name
-  publicly_accessible  = true
-  skip_final_snapshot  = true
-}
 
 resource "aws_cloudwatch_log_group" "strapi" {
   name              = "/ecs/strapi-backend"
@@ -79,18 +63,4 @@ resource "aws_ecs_service" "strapi" {
     security_groups  = ["sg-009961e820fd3b943"]
     assign_public_ip = true
   }
-}
-
-resource "aws_security_group" "rds_sg" {
-  name   = "strapi-rds-sg"
-  vpc_id = "vpc-04642e7bb88eda30e"
-}
-
-resource "aws_security_group_rule" "ecs_to_rds" {
-  type                     = "ingress"
-  from_port                = 5432
-  to_port                  = 5432
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.rds_sg.id
-  source_security_group_id = "sg-009961e820fd3b943"
 }
