@@ -42,22 +42,18 @@ resource "aws_ecs_task_definition" "strapi" {
       essential    = true
       portMappings = [{ containerPort = 1337 }]
       environment = [
-        { name = "HOST", value = "0.0.0.0" },
-        { name = "PORT", value = "1337" },
-        { name = "APP_KEYS", value = var.app_keys },
-        { name = "API_TOKEN_SALT", value = var.api_token_salt },
-        { name = "ADMIN_JWT_SECRET", value = var.admin_jwt_secret },
-        { name = "TRANSFER_TOKEN_SALT", value = var.transfer_token_salt },
-        { name = "ENCRYPTION_KEY", value = var.encryption_key },
-        { name = "JWT_SECRET", value = var.jwt_secret },
-        { name = "DATABASE_CLIENT", value = "postgres" },
-        { name = "DATABASE_HOST", value = aws_db_instance.strapi.address },
-        { name = "DATABASE_PORT", value = "5432" },
-        { name = "DATABASE_NAME", value = var.db_username }, 
-        { name = "DATABASE_USERNAME", value = var.db_username },
-        { name = "DATABASE_PASSWORD", value = var.db_password },
-        { name = "DATABASE_SSL", value = "false" }
-      ]
+       { name = "NODE_ENV", value = "production" },
+       { name = "HOST", value = "0.0.0.0" },
+       { name = "PORT", value = "1337" },
+       { name = "DATABASE_CLIENT", value = "sqlite" },
+       { name = "DATABASE_FILENAME", value = "./data/data.db" },
+       { name = "APP_KEYS", value = var.app_keys },
+       { name = "ADMIN_JWT_SECRET", value = var.admin_jwt_secret },
+       { name = "API_TOKEN_SALT", value = var.api_token_salt },
+       { name = "TRANSFER_TOKEN_SALT", value = var.transfer_token_salt },
+       { name = "ENCRYPTION_KEY", value = var.encryption_key },
+       { name = "JWT_SECRET", value = var.jwt_secret }
+     ]
 
       logConfiguration = {
         logDriver = "awslogs"
